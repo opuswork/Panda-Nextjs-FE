@@ -10,7 +10,7 @@ export default async function ProductPage({ params }) {
 
   // 💡 Docker 내부(서버사이드)에서 접근할 때는 서비스 이름인 panda-be를 사용합니다.
   // 클라이언트(브라우저)에서 접근할 때는 기존 환경변수를 사용합니다.
-  const API_URL = "http://panda-be:4000"; 
+  const API_URL = "https://panda-nextjs-be.vercel.app"; 
 
   try {
     // 1. 상품 정보 가져오기

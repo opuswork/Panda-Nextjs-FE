@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 // 서버 측 데이터 페칭 함수
 async function getArticleData(id) {
   // Docker 내부 통신 주소 사용
-  const API_BASE = 'http://panda-be:4000'; 
+  const API_BASE = 'https://panda-nextjs-be.vercel.app'; 
   
   try {
     const res = await fetch(`${API_BASE}/api/articles/${id}`, { 

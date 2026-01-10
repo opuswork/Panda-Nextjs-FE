@@ -15,7 +15,7 @@ export default function SignUp() {
   const { register } = useAuth(false);
 
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const KaKao_base_url = 'localhost:4000';
+  const KaKao_base_url = 'https://panda-nextjs-be.vercel.app';
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=http://${KaKao_base_url}/api/auth/kakao/callback&response_type=code`;
 
   // ✅ useGoogleLogin 훅은 항상 호출해야 합니다 (React 훅 규칙)

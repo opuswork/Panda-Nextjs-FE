@@ -9,7 +9,7 @@ import styles from './addComment.module.css';
 // ✅ Auth 커스텀 훅 임포트
 import { useAuth } from '@/app/contexts/AuthProvider';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
 
 export default function AddComment({ 
   targetId,           // 게시글 ID 또는 상품 ID

@@ -14,7 +14,7 @@ const getFullImageUrl = (path) => {
   if (!path) return IMAGES.PRODUCT_DEFAULT;
   if (path.startsWith('http') || path.startsWith('blob:')) return path;
   
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${baseUrl}${cleanPath}`;
 };

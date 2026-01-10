@@ -17,7 +17,7 @@ const normalizeImagePath = (imagePath) => {
   if (!imagePath) return null;
   if (imagePath.startsWith("data:") || imagePath.startsWith("http")) return imagePath;
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
   if (imagePath.startsWith("/assets")) return imagePath;
 
   const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;

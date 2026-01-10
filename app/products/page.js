@@ -13,7 +13,7 @@ export default async function Products({ searchParams }) {
   const keyword = sParams.keyword || "";
 
   // 💡 Docker 내부망 주소 사용 (Server-side fetch 전용)
-  const baseUrl = "http://panda-be:4000";
+  const baseUrl = "https://panda-nextjs-be.vercel.app";
   
   // URL 생성 및 쿼리스트링 조립
   const url = new URL(`${baseUrl}/api/products`);

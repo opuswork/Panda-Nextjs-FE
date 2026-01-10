@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
  * 사용자 정보 가져오기 함수
  */
 async function getUserData(id) {
-  const API_BASE = 'http://panda-be:4000';
+  const API_BASE = 'https://panda-nextjs-be.vercel.app';
   
   try {
     const response = await fetch(`${API_BASE}/api/users/${id}`, {

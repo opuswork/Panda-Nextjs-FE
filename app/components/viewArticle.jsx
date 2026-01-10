@@ -16,7 +16,7 @@ import { useAuth } from '@/app/contexts/AuthProvider';
 import { IMAGES } from '../constants/images';
 import styles from './viewArticle.module.css';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
 
 // 이미지 URL 처리 함수
 const getFullImageUrl = (path, defaultType = 'profile') => {

@@ -12,7 +12,7 @@ async function getArticleData(id) {
    * 서버 컴포넌트는 Docker 컨테이너 내부에서 실행됩니다.
    * 컨테이너끼리 통신할 때는 서비스 이름인 'panda-be'를 호스트로 사용해야 합니다.
    */
-  const API_BASE = 'http://panda-be:4000'; 
+  const API_BASE = 'https://panda-nextjs-be.vercel.app'; 
 
   console.log(`[Server Fetch] Requesting: ${API_BASE}/api/articles/${id}`);
 

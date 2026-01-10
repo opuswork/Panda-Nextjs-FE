@@ -10,7 +10,7 @@ import MyActivity from './MyActivity';
 
 const normalizeImagePath = (imagePath, updatedAt) => {
   if (!imagePath || imagePath === 'undefined') return null;
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
   let fullPath = imagePath;
   if (!imagePath.startsWith("http")) {
     const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;

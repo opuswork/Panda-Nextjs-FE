@@ -19,7 +19,7 @@ const nextConfig = {
       {
         source: '/api/:path*',
         // ✅ Docker 서비스 이름인 panda-be를 사용하여 백엔드와 통신합니다.
-        destination: 'http://panda-be:4000/api/:path*',
+        destination: 'https://panda-nextjs-be.vercel.app/api/:path*',
       },
     ];
   },

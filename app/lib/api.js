@@ -1,14 +1,15 @@
 // app/lib/api.js
 
 const getBaseUrl = () => {
-  // 1. 브라우저 환경(window가 존재)일 때는 그대로 localhost 사용
-  if (typeof window !== "undefined") {
-    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+  // 1. 우선적으로 환경 변수(NEXT_PUBLIC_API_BASE_URL)를 확인합니다.
+  // Netlify나 Vercel 대시보드에 등록한 값이 있다면 그 값이 사용됩니다.
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
   }
 
-  // 2. 서버 환경(Next.js 서버 컴포넌트)일 때는 Docker 서비스 이름 사용
-  // docker-compose.yml에 적힌 백엔드 서비스 이름이 'panda-be'라고 가정합니다.
-  return "http://panda-be:4000"; 
+  // 2. 환경 변수가 없을 경우의 기본값(Fallback) 설정
+  // 배포된 백엔드 주소를 직접 적어주면 가장 확실합니다.
+  return "https://panda-nextjs-be.vercel.app";
 };
 
 const BASE = getBaseUrl();

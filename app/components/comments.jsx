@@ -8,7 +8,7 @@ import styles from './comments.module.css';
 import { useAuth } from '@/app/contexts/AuthProvider';
 import { getFullImageUrl } from '@/app/constants/images';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
 
 export default function Comments({ 
   targetId, 

@@ -67,7 +67,7 @@ export function AuthProvider({ children }) {
 
   // 2-1. 구글 로그인
   async function loginWithGoogle({ accessToken, redirectTo }) {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
     const response = await fetch(`${baseUrl}/api/auth/google`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

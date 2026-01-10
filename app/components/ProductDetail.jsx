@@ -17,7 +17,7 @@ import Comments from './comments';
 import { IMAGES } from '@/app/constants/images'; 
 import styles from './ProductDetail.module.css';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
 
 const getFullImageUrl = (path) => {
   if (!path) return IMAGES.PRODUCT_DEFAULT;

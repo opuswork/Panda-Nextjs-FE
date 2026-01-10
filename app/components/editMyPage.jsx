@@ -7,7 +7,7 @@ import Toast from './Toast';
 import styles from './MyPage.module.css';
 import { useAuth } from "@/app/contexts/AuthProvider";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
 
 function EditMyPage({ initialData, profileId }) {
   const router = useRouter();
