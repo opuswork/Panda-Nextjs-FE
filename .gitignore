@@ -1,0 +1,22 @@
+# 의존성 및 빌드 결과물
+node_modules/
+.next/
+out/
+build/
+
+# 환경 변수 (보안 필수)
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# 배포 및 에디터 설정
+.netlify
+.vercel
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+npm-debug.log*

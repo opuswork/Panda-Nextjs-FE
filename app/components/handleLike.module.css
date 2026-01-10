@@ -1,0 +1,49 @@
+.likeContainer {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+  
+  .likeContainer:hover {
+    background-color: #fff1f2;
+    border-color: #fda4af;
+    transform: translateY(-2px);
+  }
+  
+  .heartWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .likeCount {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4b5563;
+  }
+  
+  /* 💡 하트 펌핑 애니메이션 */
+  @keyframes pump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  
+  .pumping {
+    animation: pump 0.3s ease-out;
+  }
+  
+  .heartIcon {
+    transition: filter 0.2s;
+  }
+  
+  .likeContainer:hover .heartIcon {
+    filter: drop-shadow(0 0 2px rgba(244, 63, 94, 0.4));
+  }

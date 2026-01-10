@@ -1,0 +1,321 @@
+/* 전체 컨테이너 */
+.myPageContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 72px; /* 헤더 높이(72px) + 여유 공간 */
+}
+
+/* 메인 콘텐츠 그리드 (이미지 + 정보 섹션) */
+.myPageContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 1:1 비율 */
+  gap: 60px;
+  align-items: start;
+}
+
+/* 좌측 이미지 섹션 */
+.userImageSection {
+  position: sticky;
+  top: 110px; /* 스크롤 시 멈출 위치 */
+  height: fit-content;
+}
+
+.avatarWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.userAvatar {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
+/* 우측 사용자 정보 섹션 */
+.userInfoSection {
+  position: sticky;
+  top: 110px; /* 이미지와 동일한 높이에서 멈춤 */
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.userNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #e5e7eb;
+  gap: 16px;
+}
+
+.userName {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+}
+
+.editButton {
+  background: var(--blue, #3692FF);
+  border: none;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.editButton:hover {
+  background: #1967d6;
+}
+
+.editButton:active {
+  background: #1251aa;
+}
+
+/* 사용자 정보 리스트 */
+.userInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoValue {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+  word-break: break-word;
+}
+
+/* 편집 폼 입력 필드 */
+.editForm {
+  width: 100%;
+}
+
+.infoInput {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px 16px;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.infoInput:focus {
+  outline: none;
+  border-color: var(--blue, #3692FF);
+  box-shadow: 0 0 0 3px rgba(54, 146, 255, 0.1);
+}
+
+.infoInput:hover {
+  border-color: #d1d5db;
+}
+
+/* 로딩 및 에러 메시지 */
+.loadingMessage,
+.errorMessage {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.errorMessage {
+  color: #ef4444;
+}
+
+.uploadImageWrapper {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploadButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background-color: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.uploadButton:hover {
+  background-color: #f3f4f6;
+  border-color: var(--blue, #3692FF);
+}
+
+.uploadIcon {
+  font-size: 32px;
+  font-weight: 300;
+  color: #6b7280;
+  line-height: 1;
+}
+
+.uploadText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .myPageContent {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .userImageSection,
+  .userInfoSection {
+    position: static; /* 모바일에서는 고정 해제 */
+  }
+
+  .userNameContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .userName {
+    font-size: 24px;
+  }
+
+  .editButton {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .avatarWrapper {
+    padding: 20px;
+  }
+
+  .userAvatar {
+    max-width: 200px;
+  }
+
+  .infoValue {
+    font-size: 16px;
+  }
+
+  .infoInput {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+}
+
+/* 탭 관련 스타일 추가 */
+.tabWrapper {
+  display: flex;
+  gap: 15px;
+  margin-left: 20px;
+}
+
+.tabItem {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 5px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tabActive {
+  color: #3B82F6;
+  font-weight: bold;
+  border-bottom: 2px solid #3B82F6;
+}
+
+.formButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.cancelBtn {
+  background-color: #E5E7EB;
+  color: #374151;
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.saveBtn {
+  background-color: #3B82F6;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.saveBtn:disabled {
+  background-color: #93C5FD;
+}
+
+.socialInfoMessage {
+  background-color: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.socialInfoMessage p {
+  color: #1e40af;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}

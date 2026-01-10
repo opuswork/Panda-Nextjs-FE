@@ -1,0 +1,73 @@
+/* Comment Input Section */
+.commentInputSection {
+    width: 100%; /* 컨테이너 전체 너비 사용 */
+    border-top: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 32px 0;
+    margin-bottom: 32px;
+}
+
+.commentSectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1F2937;
+    margin: 0 0 16px 0;
+}
+
+.commentForm {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.textareaWrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column; /* 💡 텍스트 영역 아래에 버튼을 두는 구조 */
+    gap: 12px;
+}
+
+.commentTextarea {
+    width: 100% !important; /* 👈 핵심: 가로 너비 100% */
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+.commentTextarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.commentSubmitButton {
+    align-self: flex-end; /* 💡 버튼을 오른쪽 정렬 */
+    width: 30%;
+    padding: 12px 24px;
+    background: #6B7280;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.commentSubmitButton:hover:not(:disabled) {
+    background: #4B5563;
+}
+
+.commentSubmitButton:disabled {
+    background: #D1D5DB;
+    cursor: not-allowed;
+}

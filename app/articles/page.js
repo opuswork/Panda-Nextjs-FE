@@ -1,0 +1,14 @@
+// app/articles/page.js
+import Header from "@/app/components/Header";
+import Articles from "@/app/components/Articles";
+
+function ArticlesPage() {
+  return (
+    <>
+      <Header />
+      <Articles />
+    </>
+  );
+}
+
+export default ArticlesPage;

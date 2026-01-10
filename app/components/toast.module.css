@@ -1,0 +1,24 @@
+/* app/components/toast.module.css */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    font-weight: 500;
+    animation: fadeInOut 2.5s ease-in-out forwards;
+  }
+  
+  .success { background-color: #10B981; } /* 초록색 */
+  .error { background-color: #EF4444; }   /* 빨간색 */
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    15% { opacity: 1; transform: translate(-50%, 0); }
+    85% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+  }

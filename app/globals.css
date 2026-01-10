@@ -1,0 +1,315 @@
+:root {
+  --blue: #3692ff;
+  --header-height: 68px; /* 헤더 높이 고정 */
+  --max-width: 1200px;   /* 실제 콘텐츠 최대 너비 (보통 1200px가 가장 적당함) */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Pretendard 폰트가 없을 경우를 대비해 시스템 폰트 추가 */
+body {
+  background-color: #ffffff;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111827;
+  overflow-x: hidden;
+}
+
+/* ✅ 레이아웃 구조 (푸터 하단 고정 로직) */
+html, body {
+  height: 100%;
+}
+
+#layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ✅ 헤더가 fixed이므로 본문에 여백을 줌 */
+main {
+  flex: 1 0 auto;
+  /* padding-top: var(--header-height);  */
+  width: 100%;
+}
+
+/* Spinner 스타일 */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   Header Styles
+   ========================================== */
+header {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px); /* 세련된 배경 흐림 효과 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--header-height);
+  border-bottom: 1px solid #DFDFDF;
+  display: flex;
+  justify-content: center;
+}
+
+.headerWrapper {
+  width: 100%;
+  max-width: var(--max-width);
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.desktopLogo { display: block; }
+.mobileLogo { display: none; }
+
+.headerRight {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+}
+
+.headerAuthButtonsContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.userNickname {
+  font-size: 16px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.headerAuthButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ✅ 로그인 시 나타나는 프로필 그룹 스타일 */
+.profile-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.profile-group span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.profileIcon {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e5e7eb;
+}
+
+.profileDropdownButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.profileDropdownButton:hover {
+  opacity: 0.7;
+}
+
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 90px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.profileDropdownOption {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #111827;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.profileDropdownOption:hover {
+  background-color: #f3f4f6;
+}
+
+.profileDropdownOption:nth-child(2) {
+  border-top: 1px solid #e5e7eb;
+}
+
+.profileDropdownOption:nth-child(3) {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* 버튼 스타일 */
+#loginLinkButton {
+  background-color: var(--blue);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#loginLinkButton:hover {
+  background-color: #257ae0;
+}
+
+/* ==========================================
+   Footer Styles
+   ========================================== */
+.footerWrapper {
+  width: 100%;
+  background-color: #111827;
+  margin-top: auto;
+}
+
+footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  color: #9ca3af;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.footerCopyright { 
+  font-size: 14px; 
+}
+
+/* 데스크톱: footerTopRow를 무시하고 한 줄로 배치 */
+.footerTopRow {
+  display: contents; /* 데스크톱에서는 자식 요소들이 부모의 직접 자식처럼 동작 */
+}
+
+#footerMenu {
+  display: flex;
+  gap: 30px;
+}
+
+#footerMenu a {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+#footerMenu a:hover { color: #fff; }
+
+#socialMedia {
+  display: flex;
+  gap: 16px;
+}
+
+/* ==========================================
+   Responsive (Mobile)
+   ========================================== */
+@media (max-width: 768px) {
+  .desktopLogo { display: none; }
+  .mobileLogo { display: block; }
+
+  header { height: 60px; }
+  /* main { padding-top: 60px; } */
+
+  footer {
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+  }
+
+  /* 모바일: footerTopRow가 적용되어 위아래로 배치 */
+  .footerTopRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .profile-group span { display: none; } /* 모바일에서는 닉네임 숨김 */
+  .userNickname { display: none; } /* 모바일에서는 닉네임 숨김 */
+}
+
+@media (max-width: 499px) {
+  #loginLinkButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Header.module.css 또는 해당 CSS 파일 */
+.headerLoadingPlaceholder {
+  background-color: #f2f2f2; /* 연한 회색 */
+  border-radius: 8px;
+  /* 부드럽게 깜빡이는 애니메이션 (선택사항) */
+  animation: skeleton-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

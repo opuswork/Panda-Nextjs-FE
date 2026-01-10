@@ -1,0 +1,254 @@
+/* 전체 컨테이너 */
+.productDetailContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 92px; /* 헤더 높이(72px) + 여유 공간 */
+}
+
+/* 상단 헤더 (뒤로가기 버튼) */
+.productDetailHeader {
+  margin-bottom: 30px;
+}
+
+.backButton {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* 메인 콘텐츠 그리드 (이미지 + 정보 섹션) */
+.productDetailContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 1:1 비율 */
+  gap: 60px;
+  align-items: start; /* sticky가 작동하기 위한 필수 속성 */
+}
+
+/* ✅ 좌측 이미지 섹션 고정 */
+.productDetailImageSection {
+  position: sticky;
+  top: 110px; /* 스크롤 시 멈출 위치 */
+  height: fit-content;
+}
+
+.productDetailImage {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ 우측 상품 정보 섹션 고정 */
+.productDetailInfoSection {
+  position: sticky;
+  top: 110px; /* 이미지와 동일한 높이에서 멈춤 */
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 상품 제목 및 케밥 메뉴 */
+.productTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.productDetailName {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* 케밥 드롭다운 스타일 */
+.articleActionsMenu {
+  position: relative;
+}
+
+.articleActionsButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+}
+
+.articleActionsButton:hover {
+  background-color: #f3f4f6;
+}
+
+.articleActionsDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.articleActionItem {
+  padding: 10px 10px;
+  font-size: 14px;
+  color: #374151;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.articleActionItem:hover {
+  background-color: #f9fafb;
+  color: #4f46e5;
+}
+
+/* 카테고리, 가격, 설명 등 상세 정보 */
+.productDetailCategory {
+  display: inline-block;
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.priceAndLikeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.productDetailPrice {
+  font-size: 40px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.productDetailDescription h3,
+.productDetailTags h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.productDetailDescription p {
+  font-size: 16px;
+  color: #4b5563;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.productDetailStock {
+  font-size: 16px;
+  color: #374151;
+}
+
+/* 태그 스타일 */
+.tagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagItem {
+  background: #eff6ff;
+  color: #3b82f6;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ✅ 하단 문의하기 섹션 (스크롤 영역) */
+.qnaSection {
+  margin-top: 60px;
+  padding-top: 60px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.backToListButton {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* 모달 스타일 */
+.deleteModalContent {
+  padding: 10px;
+  text-align: center;
+}
+
+.deleteModalButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modalCancelBtn, .modalDeleteBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modalCancelBtn { background: #f3f4f6; border: none; }
+.modalDeleteBtn { background: #ef4444; color: white; border: none; }
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .productDetailContent {
+    grid-template-columns: 1fr;
+  }
+
+  .productDetailImageSection,
+  .productDetailInfoSection {
+    position: static; /* 모바일에서는 고정 해제 */
+  }
+
+  .productDetailName {
+    font-size: 26px;
+  }
+}

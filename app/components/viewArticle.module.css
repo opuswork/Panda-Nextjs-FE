@@ -1,0 +1,228 @@
+.viewArticleContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 92px; /* 헤더 높이 반영 */
+  }
+  
+  .viewArticleContent {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 0;
+  }
+  
+  /* 제목 섹션 */
+  .articleHeader {
+    margin-bottom: 30px;
+  }
+  
+  .articleTitleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .articleTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+    flex: 1;
+    margin: 0;
+    word-break: break-all;
+  }
+  
+  /* ✅ 케밥 메뉴 스타일 */
+  .articleActionsMenu {
+    position: relative;
+    margin-left: 20px;
+  }
+  
+  .articleActionsButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    transition: background 0.2s;
+  }
+  
+  .articleActionsButton:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .articleActionsDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    min-width: 90px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  
+  .articleActionItem {
+    padding: 10px 10px;
+    font-size: 14px;
+    color: #374151;
+    text-align: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  
+  .articleActionItem:hover {
+    background-color: #f9fafb;
+    color: #4f46e5;
+  }
+  
+  /* ✅ 메타 정보 (작성자, 날짜, 좋아요) - 중앙 정렬 핵심 섹션 */
+  .articleMetaInfo {
+    padding-bottom: 24px;
+    border-bottom: 2px solid #f3f4f6;
+  }
+  
+  .authorInfo {
+    display: flex;
+    align-items: center; /* 👈 수직 중앙 정렬 */
+    gap: 16px;           /* 👈 요소 간 일정한 간격 */
+    flex-wrap: wrap;
+  }
+  
+  .profileIcon {
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f3f4f6;
+  }
+  
+  .authorName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .articleDate {
+    margin-right: 0px;
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  
+  .divider {
+    width: 1px;               /* 선의 굵기 */
+    height: 36px;             /* 👈 프로필 이미지와 동일한 높이 */
+    background-color: #e5e7eb; /* 선의 색상 (연한 회색) */
+    display: inline-block;
+    margin-top: 0px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+  }
+
+
+  /* 본문 섹션 */
+  .articleBody {
+    padding: 40px 0;
+  }
+  
+  .articleImageContainer {
+    margin-bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .articleMainImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+  
+  .articleTextContent {
+    font-size: 18px;
+    color: #374151;
+    line-height: 1.8;
+    white-space: pre-wrap; /* 💡 줄바꿈 유지 */
+    word-break: break-all;
+  }
+  
+  /* 목록으로 돌아가기 버튼 */
+  .backToListButton {
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .backToListButton:hover {
+    background: #e5e7eb;
+    color: #111827;
+  }
+  
+  /* 삭제 모달 및 기타 */
+  .deleteModalContent {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .deleteModalButtons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .modalCancelBtn, .modalDeleteBtn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .modalCancelBtn { background: #f3f4f6; border: none; }
+  .modalDeleteBtn { background: #ef4444; color: white; border: none; }
+  
+  .deletingOverlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    color: white; font-weight: bold; z-index: 1000;
+  }
+  
+  /* 모바일 반응형 */
+  @media (max-width: 768px) {
+    .viewArticleContainer {
+      padding-top: 80px;
+    }
+    
+    .articleTitle {
+      font-size: 24px;
+    }
+  
+    .authorInfo {
+      gap: 10px;
+    }
+    
+    .articleTextContent {
+      font-size: 16px;
+    }
+  }
