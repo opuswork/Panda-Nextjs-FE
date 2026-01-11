@@ -133,8 +133,6 @@ export default function Registration() {
       dataToSend.append('price', formData.price);
       dataToSend.append('stock', formData.stock);
       dataToSend.append('tags', JSON.stringify(tagsArray));
-      // 필요 시 백엔드에 판매자 ID나 이름을 함께 보낼 수 있습니다.
-      // dataToSend.append('sellerName', formData.sellerName);
 
       if (formData.image) {
         dataToSend.append('image', formData.image);
@@ -146,7 +144,8 @@ export default function Registration() {
         credentials: 'include',
       });
       
-      const data = await response.json();
+      // ✅ [수정] 응답 본문을 딱 한 번만 변수에 저장합니다.
+      const result = await response.json();
 
       if (response.ok) {
         setToast({ 
@@ -154,21 +153,23 @@ export default function Registration() {
           message: '상품이 성공적으로 등록되었습니다! 🎁', 
           type: 'success' 
         });
-        router.push('/products');
-        return; // 여기서 함수 종료
+        // 성공 시에는 router.push가 Toast 종료 후 실행되도록 하거나 여기서 즉시 실행
+        return; 
       } else {
-        const errData = await response.json();
-        setToast({ visible: true, message: errData.message || '등록 실패', type: 'error' });
-        setUpdating(false); // 실패 시에는 다시 버튼을 활성화해야 함
+        // ✅ [수정] 위에서 선언한 result 변수를 재사용합니다.
+        setToast({ 
+          visible: true, 
+          message: result.message || '등록 실패', 
+          type: 'error' 
+        });
       }
     } catch (err) {
       console.error('등록 에러:', err);
       setToast({ visible: true, message: '서버 오류가 발생했습니다.', type: 'error' });
-      setUpdating(false); // 에러 시에도 다시 버튼 활성화
-    } 
-    // finally {
-    //   setLoading(false);
-    // }
+    } finally {
+      // ✅ loading 상태를 해제하여 버튼을 다시 활성화합니다.
+      setLoading(false);
+    }
   };
 
   return (
