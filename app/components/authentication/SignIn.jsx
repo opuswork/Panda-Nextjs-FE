@@ -29,7 +29,8 @@ export default function SignIn({ returnTo: propsReturnTo }) {
    * ux_mode: 'redirect'를 설정하면 팝업 대신 페이지가 전환됩니다.
    */
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const API_BASE_URL = 'https://panda-nextjs-be.vercel.app';
+  const API_BASE_URL = process.env.API_BASE_URL;
+  const FRONTEND_URL = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://helpful-brigadeiros-517905.netlify.app');
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${API_BASE_URL}/api/auth/kakao/callback&response_type=code`;
 
   // ✅ useGoogleLogin 훅은 항상 호출해야 합니다 (React 훅 규칙)
@@ -40,7 +41,7 @@ export default function SignIn({ returnTo: propsReturnTo }) {
     client_id: googleClientId || '', // ✅ client_id 명시적으로 전달 (없으면 빈 문자열)
     flow: 'auth-code', // 백엔드에서 코드를 받아 처리하는 방식
     ux_mode: 'redirect', // 🚀 팝업이 아닌 리디렉션(페이지 전환) 방식 설정
-    redirect_uri: `${API_BASE_URL}/api/auth/google/callback`,
+    redirect_uri: `${FRONTEND_URL}/auth/google/callback`, // ✅ 프론트엔드 콜백 URL로 변경
   });
 
   const handleSubmit = async (e) => {

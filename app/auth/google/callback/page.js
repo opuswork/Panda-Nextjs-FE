@@ -17,7 +17,7 @@ export default function GoogleCallback() {
     // 2. 요청 시작 전 즉시 깃발을 올림 (중복 실행 방지)
     isFetched.current = true;
 
-    const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+    const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     console.log("인증 시도 중... code:", code);
 
