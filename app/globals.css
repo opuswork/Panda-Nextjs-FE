@@ -22,6 +22,7 @@ body {
 
 /* ✅ 레이아웃 구조 (푸터 하단 고정 로직) */
 html, body {
+  background-color: #fafafa !important;
   height: 100%;
 }
 

@@ -18,7 +18,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={isLoading ? "" : "fade-in-content"}>
+    <main className={isLoading ? "" : "fade-in-content"} style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
       {isLoading ? (
         <LandingSkeleton />
       ) : (
