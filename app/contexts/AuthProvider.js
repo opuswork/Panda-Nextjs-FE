@@ -90,8 +90,11 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       setIsLoggingOut(true); // 즉시 화면 가리기 활성화
-
-      const res = await fetch('/api/auth/logout', { method: 'POST' });
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`, { 
+        method: 'POST',
+        credentials: "include", // ✅ 크로스 도메인 쿠키를 위해 필수
+      });
       
       if (res.ok) {
         // ✅ 로그아웃 성공 시 로컬스토리지에 힌트 저장
