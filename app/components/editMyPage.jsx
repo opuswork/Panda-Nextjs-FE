@@ -61,10 +61,8 @@ function EditMyPage({ initialData, profileId }) {
 
   const handleCloseToast = () => {
     setToast(prev => ({ ...prev, visible: false }));
-    if (toast.type === 'success' && activeTab === 'profile') {
-      // ✅ 페이지 새로고침 대신 router.push 사용 (AuthProvider가 이미 업데이트된 정보를 가지고 있음)
-      router.push('/profile');
-    }
+    // ✅ handleSubmitProfile에서 이미 router.push를 처리하므로 여기서는 중복 처리하지 않음
+    // updating 상태는 handleSubmitProfile에서 페이지 이동 직전까지 유지됨
   };
 
   // 3. 프로필 정보 수정 제출
@@ -92,13 +90,14 @@ function EditMyPage({ initialData, profileId }) {
       // ✅ 프로필 수정 성공 후 사용자 정보 새로고침
       await getMe();
       
-      // ✅ 사용자가 "저장 중..." 상태를 볼 수 있도록 최소 지연 시간 추가
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
       setToast({ visible: true, message: '프로필 정보가 수정되었습니다! ✨', type: 'success' });
       
-      // ✅ 토스트가 표시된 후에 버튼 상태 복원 (사용자가 피드백을 볼 수 있도록)
-      setUpdating(false);
+      // ✅ Toast duration (2.5초) + 여유 시간(0.5초) = 총 3초 대기
+      // Toast가 완전히 사라질 때까지 "저장 중..." 상태 유지
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // ✅ /profile로 이동 (페이지 이동이 시작되면 컴포넌트가 언마운트되므로 updating 상태는 자동 해제)
+      router.push('/profile');
     } catch (err) {
       setToast({ visible: true, message: err.message, type: 'error' });
       setUpdating(false);
@@ -154,8 +153,8 @@ function EditMyPage({ initialData, profileId }) {
       
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       
-      // ✅ 사용자가 "변경 중..." 상태를 볼 수 있도록 최소 지연 시간 추가
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // ✅ Toast가 표시되고 사용자가 확인할 수 있도록 최소 2초 대기
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // ✅ 토스트가 표시된 후에 버튼 상태 복원
       setUpdating(false);
