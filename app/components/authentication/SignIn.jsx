@@ -31,7 +31,7 @@ export default function SignIn({ returnTo: propsReturnTo }) {
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app'; // ✅ NEXT_PUBLIC_ 접두사 추가
   const FRONTEND_URL = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://helpful-brigadeiros-517905.netlify.app');
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${API_BASE_URL}/api/auth/kakao/callback&response_type=code`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${API_BASE_URL}/api/auth/kakao/callback&response_type=code&prompt=login`;
 
   // ✅ useGoogleLogin 훅은 항상 호출해야 합니다 (React 훅 규칙)
   // client_id는 반드시 필요하므로, 없으면 훅이 에러를 던집니다.
