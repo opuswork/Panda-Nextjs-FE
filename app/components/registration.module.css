@@ -64,7 +64,7 @@
     white-space: nowrap;
   }
   .registrButton:hover {
-    background-color: #1967d6;
+    background-color: var(--blue);
   }
   
   .registrButton:focus {
