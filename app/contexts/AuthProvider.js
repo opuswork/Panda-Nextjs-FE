@@ -100,7 +100,7 @@ export function AuthProvider({ children }) {
     }
 
     await getMe();
-    router.push(redirectTo || "/products");
+    router.push(redirectTo || "/");
   }
 
   // ✅ 3. 로그아웃 (시차 해결 로직 포함)
