@@ -19,6 +19,11 @@ export default function GoogleCallback() {
     // 2. 요청 시작 전 즉시 깃발을 올림 (중복 실행 방지)
     isFetched.current = true;
 
+    // ✅ White Out 방지: 즉시 로그인 중 상태 활성화 (화면 전체 오버레이 표시)
+    setIsLoggingIn(true);
+    // ✅ Header에 사용자 정보가 먼저 표시되지 않도록 localStorage 임시 제거
+    localStorage.removeItem('user');
+
     const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     console.log("인증 시도 중... code:", code);
@@ -33,10 +38,6 @@ export default function GoogleCallback() {
     .then(async (res) => {
       if (res.ok) {
         console.log("로그인 성공! 사용자 정보를 가져오는 중...");
-        // ✅ 로그인 중 상태 활성화 (화면 전체 오버레이 표시)
-        setIsLoggingIn(true);
-        // ✅ Header에 사용자 정보가 먼저 표시되지 않도록 localStorage 임시 제거
-        localStorage.removeItem('user');
         // ✅ 인증 상태 업데이트를 위해 getMe 호출 (코드 통일성 유지)
         await getMe();
         // ✅ 3초 대기 후 홈페이지로 리다이렉트 (스피너 표시 시간 확보)
@@ -57,7 +58,19 @@ export default function GoogleCallback() {
   }, [code, router]);
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
+    <div style={{ 
+      position: 'fixed', 
+      top: 0, 
+      left: 0, 
+      width: '100vw', 
+      height: '100vh',
+      backgroundColor: '#ffffff', 
+      zIndex: 9999, 
+      display: 'flex',
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems: 'center'
+    }}>
       {/* 사용자 경험을 위해 로딩 애니메이션 추가 */}
       <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
       <p className="text-gray-600 font-medium">구글 계정 인증 중입니다...</p>

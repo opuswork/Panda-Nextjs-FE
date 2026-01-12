@@ -34,7 +34,13 @@ export function AuthProvider({ children }) {
   });
   const [isPending, setIsPending] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false); // 로그아웃 상태
-  const [isLoggingIn, setIsLoggingIn] = useState(false); // 로그인 상태
+  // ✅ 구글 로그인 후 페이지 리로드 시에도 오버레이 유지
+  const [isLoggingIn, setIsLoggingIn] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('isGoogleLoggingIn') === 'true';
+    }
+    return false;
+  });
   const router = useRouter();
 
   // 1. 내 정보 가져오기
@@ -53,7 +59,12 @@ export function AuthProvider({ children }) {
         setUser(userData);
         // ✅ 로그인 성공 시 로그아웃 힌트 제거 및 사용자 정보 저장
         localStorage.removeItem('isLoggedOut');
+        localStorage.removeItem('isGoogleLoggingIn'); // ✅ 구글 로그인 플래그 제거
         localStorage.setItem('user', JSON.stringify(userData));
+        // ✅ 구글 로그인 플래그가 있었으면 오버레이 해제
+        if (isLoggingIn) {
+          setIsLoggingIn(false);
+        }
       } else {
         setUser(null);
         // ✅ 로그인 실패 시 로그아웃 힌트 저장 및 사용자 정보 제거
