@@ -28,7 +28,8 @@ body {
 
 /* 2. 전체 레이아웃 구조 */
 #layout-wrapper {
-  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
