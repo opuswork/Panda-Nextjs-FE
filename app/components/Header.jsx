@@ -11,12 +11,22 @@ function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const isLandingPage = pathname === "/";
-  // ✅ isLoggingOut, isLoggingIn 추가
   const { user, isPending, isLoggingOut, isLoggingIn, logout } = useAuth(); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   
-  // ✅ localStorage에서 사용자 정보를 확인하여 초기 렌더링 시 깜빡임 방지
+  // ✅ 강제 스켈레톤 유지를 위한 상태 추가 (기본값 true)
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  // ✅ 컴포넌트 마운트 시 3초 타이머 시작
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 3000); // 3초간 스켈레톤 유지
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const [localUser, setLocalUser] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedUser = localStorage.getItem('user');
@@ -32,7 +42,6 @@ function Header() {
     return null;
   });
   
-  // ✅ user가 업데이트되면 localUser도 업데이트
   useEffect(() => {
     if (user) {
       setLocalUser(user);
@@ -41,12 +50,11 @@ function Header() {
     }
   }, [user, isPending]);
   
-  // ✅ 표시할 사용자 정보 결정 (user가 있으면 user, 없으면 localUser)
   const displayUser = user || localUser;
 
   const handleLogout = async () => {
-    setIsDropdownOpen(false); // 드롭다운 먼저 닫기
-    await logout(); // AuthProvider에서 페이지 이동까지 처리함
+    setIsDropdownOpen(false);
+    await logout();
   };
 
   const toggleDropdown = () => {
@@ -66,6 +74,9 @@ function Header() {
   const userDisplayName = displayUser?.nickname || 
     (displayUser?.firstName && displayUser?.lastName ? `${displayUser.firstName}${displayUser.lastName}` : "사용자");
 
+  // ✅ 로딩 조건 통합 (강제 3초 + 인증 펜딩 + 로그인/로그아웃 진행중)
+  const showSkeleton = isInitialLoading || isPending || isLoggingOut || isLoggingIn;
+
   return (
     <header className="header">
       <div className="headerWrapper">
@@ -83,41 +94,45 @@ function Header() {
           )}
         </div>
 
-        <div className={`headerAuthSection ${(displayUser && !isPending && !isLoggingOut && !isLoggingIn) ? "isLoggedIn" : ""}`}>
-          {/* ✅ 수정된 로직: 로딩 중이거나 로그아웃 중이거나 로그인 중일 때 Placeholder를 보여줌 */}
-          {(isPending || isLoggingOut || isLoggingIn) ? (
-            // 로그인 버튼이나 프로필 아이콘과 비슷한 크기의 빈 박스
-            <div className="headerLoadingPlaceholder" style={{ width: '70px', height: '40px' }}></div>
+        <div className={`headerAuthSection ${(displayUser && !showSkeleton) ? "isLoggedIn" : ""}`}>
+          {showSkeleton ? (
+            // ✅ 스켈레톤 로딩 UI (CSS 애니메이션이 적용된 클래스 권장)
+            <div className="headerLoadingPlaceholder skeleton-pulse" 
+                 style={{ 
+                   width: '80px', 
+                   height: '40px', 
+                   background: '#f0f0f0', 
+                   borderRadius: '8px' 
+                 }}>
+            </div>
           ) : displayUser ? (
-                <div className="headerAuthButtonsContainer" ref={dropdownRef}>
-                  <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="userNickname">{userDisplayName}님</span>
-                    <Image
-                      src={displayUser.image || IMAGES.ICON_PROFILE}
-                      alt="Profile"
-                      width={32}
-                      height={32}
-                      className="profileIcon"
-                      style={{ borderRadius: '50%', objectFit: 'cover' }}
-                      unoptimized
-                    />
-                  </div>
+            <div className="headerAuthButtonsContainer" ref={dropdownRef}>
+              <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="userNickname">{userDisplayName}님</span>
+                <Image
+                  src={displayUser.image || IMAGES.ICON_PROFILE}
+                  alt="Profile"
+                  width={32}
+                  height={32}
+                  className="profileIcon"
+                  style={{ borderRadius: '50%', objectFit: 'cover' }}
+                  unoptimized
+                />
+              </div>
 
-                  {isDropdownOpen && (
-                    <div className="profileDropdown">
-                      <button type="button" className="profileDropdownOption" onClick={() => { router.push("/profile"); setIsDropdownOpen(false); }}>내프로필</button>
-                      <button type="button" className="profileDropdownOption" onClick={() => { router.push("/settings/account"); setIsDropdownOpen(false); }}>계정설정</button>
-                      <hr className="dropdownDivider" />
-                      <button type="button" className="profileDropdownOption logoutOption" onClick={handleLogout}>로그아웃</button>
-                    </div>
-                  )}
+              {isDropdownOpen && (
+                <div className="profileDropdown">
+                  <button type="button" className="profileDropdownOption" onClick={() => { router.push("/profile"); setIsDropdownOpen(false); }}>내프로필</button>
+                  <button type="button" className="profileDropdownOption" onClick={() => { router.push("/settings/account"); setIsDropdownOpen(false); }}>계정설정</button>
+                  <hr className="dropdownDivider" />
+                  <button type="button" className="profileDropdownOption logoutOption" onClick={handleLogout}>로그아웃</button>
                 </div>
-              ) : (
-                <Link href="/auth" id="loginLinkButton" className="loginButton">로그인</Link>
-              )
-            }
+              )}
+            </div>
+          ) : (
+            <Link href="/auth" id="loginLinkButton" className="loginButton">로그인</Link>
+          )}
         </div>
-
       </div>
     </header>
   );
