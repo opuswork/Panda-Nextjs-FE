@@ -7,10 +7,13 @@
 
 /* 1. 강력한 화이트 아웃 방지 설정 */
 html, body {
-  background-color: #fafafa !important; 
+  background-color: var(--bg-color) !important; /* JS 로드 전 배경색 고정 */
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
