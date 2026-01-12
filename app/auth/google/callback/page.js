@@ -34,7 +34,9 @@ export default function GoogleCallback() {
       if (res.ok) {
         console.log("로그인 성공! 사용자 정보를 가져오는 중...");
         // ✅ 인증 상태 업데이트를 위해 getMe 호출
-        // 페이지 새로고침으로 AuthProvider가 자동으로 getMe를 호출하도록 함
+        await getMe();
+        // ✅ 사용자 정보를 localStorage에 저장한 후 리다이렉트
+        // 이렇게 하면 페이지 리로드 시에도 사용자 정보가 유지되어 깜빡임 방지
         window.location.href = "/"; // ✅ 전체 페이지 리로드로 쿠키와 상태 동기화
       } else {
         const errorData = await res.json();

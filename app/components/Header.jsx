@@ -15,6 +15,34 @@ function Header() {
   const { user, isPending, isLoggingOut, logout } = useAuth(); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  
+  // ✅ localStorage에서 사용자 정보를 확인하여 초기 렌더링 시 깜빡임 방지
+  const [localUser, setLocalUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem('user');
+      const isLoggedOut = localStorage.getItem('isLoggedOut');
+      if (!isLoggedOut && savedUser) {
+        try {
+          return JSON.parse(savedUser);
+        } catch (e) {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+  
+  // ✅ user가 업데이트되면 localUser도 업데이트
+  useEffect(() => {
+    if (user) {
+      setLocalUser(user);
+    } else if (!isPending) {
+      setLocalUser(null);
+    }
+  }, [user, isPending]);
+  
+  // ✅ 표시할 사용자 정보 결정 (user가 있으면 user, 없으면 localUser)
+  const displayUser = user || localUser;
 
   const handleLogout = async () => {
     setIsDropdownOpen(false); // 드롭다운 먼저 닫기
@@ -35,8 +63,8 @@ function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isDropdownOpen]);
 
-  const userDisplayName = user?.nickname || 
-    (user?.firstName && user?.lastName ? `${user.firstName}${user.lastName}` : "사용자");
+  const userDisplayName = displayUser?.nickname || 
+    (displayUser?.firstName && displayUser?.lastName ? `${displayUser.firstName}${displayUser.lastName}` : "사용자");
 
   return (
     <header className="header">
@@ -55,17 +83,17 @@ function Header() {
           )}
         </div>
 
-        <div className={`headerAuthSection ${(user && !isPending && !isLoggingOut) ? "isLoggedIn" : ""}`}>
+        <div className={`headerAuthSection ${(displayUser && !isPending && !isLoggingOut) ? "isLoggedIn" : ""}`}>
           {/* ✅ 수정된 로직: 로딩 중이거나 로그아웃 중일 때 Placeholder를 보여줌 */}
           {(isPending || isLoggingOut) ? (
             // 로그인 버튼이나 프로필 아이콘과 비슷한 크기의 빈 박스
             <div className="headerLoadingPlaceholder" style={{ width: '70px', height: '40px' }}></div>
-          ) : user ? (
+          ) : displayUser ? (
                 <div className="headerAuthButtonsContainer" ref={dropdownRef}>
                   <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span className="userNickname">{userDisplayName}님</span>
                     <Image
-                      src={user.image || IMAGES.ICON_PROFILE}
+                      src={displayUser.image || IMAGES.ICON_PROFILE}
                       alt="Profile"
                       width={32}
                       height={32}

@@ -48,12 +48,14 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-        // ✅ 로그인 성공 시 로그아웃 힌트 제거
+        // ✅ 로그인 성공 시 로그아웃 힌트 제거 및 사용자 정보 저장
         localStorage.removeItem('isLoggedOut');
+        localStorage.setItem('user', JSON.stringify(userData));
       } else {
         setUser(null);
-        // ✅ 로그인 실패 시 로그아웃 힌트 저장
+        // ✅ 로그인 실패 시 로그아웃 힌트 저장 및 사용자 정보 제거
         localStorage.setItem('isLoggedOut', 'true');
+        localStorage.removeItem('user');
       }
     } catch (error) {
       console.error("[AuthProvider] getMe failed:", error);
