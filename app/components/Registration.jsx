@@ -153,7 +153,8 @@ export default function Registration() {
           message: '상품이 성공적으로 등록되었습니다! 🎁', 
           type: 'success' 
         });
-        // 성공 시에는 router.push가 Toast 종료 후 실행되도록 하거나 여기서 즉시 실행
+        // ✅ 성공 시에는 loading 상태를 유지하여 버튼이 "등록 중..." 상태로 유지됩니다.
+        // handleCloseToast에서 /products로 이동할 때까지 유지됩니다.
         return; 
       } else {
         // ✅ [수정] 위에서 선언한 result 변수를 재사용합니다.
@@ -162,12 +163,13 @@ export default function Registration() {
           message: result.message || '등록 실패', 
           type: 'error' 
         });
+        // ✅ 에러 시에만 loading 상태를 해제합니다.
+        setLoading(false);
       }
     } catch (err) {
       console.error('등록 에러:', err);
       setToast({ visible: true, message: '서버 오류가 발생했습니다.', type: 'error' });
-    } finally {
-      // ✅ loading 상태를 해제하여 버튼을 다시 활성화합니다.
+      // ✅ 에러 시에만 loading 상태를 해제합니다.
       setLoading(false);
     }
   };
