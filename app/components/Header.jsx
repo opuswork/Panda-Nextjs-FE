@@ -45,6 +45,9 @@ function Header() {
   useEffect(() => {
     if (user) {
       setLocalUser(user);
+      // ✅ 유저 정보가 확실히 들어오면 3초를 기다리지 않고 로딩을 종료해서 
+      // "Continue" 버튼 클릭 후의 반응 속도를 높입니다.
+      setIsInitialLoading(false); 
     } else if (!isPending) {
       setLocalUser(null);
     }
@@ -75,7 +78,7 @@ function Header() {
     (displayUser?.firstName && displayUser?.lastName ? `${displayUser.firstName}${displayUser.lastName}` : "사용자");
 
   // ✅ 로딩 조건 통합 (강제 3초 + 인증 펜딩 + 로그인/로그아웃 진행중)
-  const showSkeleton = isPending && !localUser; // 로컬 데이터조차 없을 때만 스켈레톤 표시
+  const showSkeleton = (isInitialLoading || isPending || isLoggingIn) && !localUser;
 
   return (
     <header className="header">
