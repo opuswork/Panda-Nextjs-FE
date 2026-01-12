@@ -191,7 +191,14 @@ export default function Registration() {
             등록취소
           </button>
           <button className={styles.registrButton} type="submit" form="product-form" disabled={loading}>
-            {loading ? '등록 중...' : '상품 등록'}
+            {loading ? (
+              <>
+                <span className={styles.buttonSpinner}></span>
+                <span>등록 중...</span>
+              </>
+            ) : (
+              '상품 등록'
+            )}
           </button>
         </div>
       </div>
