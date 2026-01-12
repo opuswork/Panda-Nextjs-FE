@@ -43,7 +43,6 @@ export default async function Products({ searchParams }) {
 
   return (
     <>
-      <Header />
       {/* 💡 초기 데이터와 현재 파라미터를 컴포넌트에 넘겨줍니다. */}
       <SecondHandMarket 
         initialData={initialData} 

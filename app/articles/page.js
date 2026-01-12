@@ -5,7 +5,6 @@ import Articles from "@/app/components/Articles";
 function ArticlesPage() {
   return (
     <>
-      <Header />
       <Articles />
     </>
   );

@@ -48,7 +48,6 @@ export default async function EditProfilePage({ params }) {
 
   return (
     <>
-      <Header />
       <EditMyPage initialData={user} profileId={id} />
     </>
   );

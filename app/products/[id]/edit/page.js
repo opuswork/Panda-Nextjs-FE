@@ -17,7 +17,6 @@ export default async function EditProductPage({ params }) {
 
     return (
       <>
-        <Header />
         {/* 💡 불러온 데이터를 props로 전달합니다. */}
         <EditProductInfo initialProduct={product} productId={id} />
       </>

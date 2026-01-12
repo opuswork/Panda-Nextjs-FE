@@ -26,7 +26,6 @@ export default function ProfilePage() {
   // ✅ 로딩 중일 때는 MyPage 컴포넌트가 스켈레톤을 표시합니다
   return (
     <>
-      <Header />
       <MyPage />
     </>
   );
