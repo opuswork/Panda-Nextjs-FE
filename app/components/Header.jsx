@@ -12,17 +12,17 @@ function Header() {
   const router = useRouter();
   const isLandingPage = pathname === "/";
   
-  // AuthContext에서 인증 상태 가져오기
+  // AuthContext에서 인증 상태 및 함수 가져오기
   const { user, isPending, isLoggingOut, isLoggingIn, logout } = useAuth(); 
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   
-  // ✅ 1. 강제 스켈레톤 유지를 위한 상태 (3초 타이머)
+  // ✅ 1. 강제 스켈레톤 유지를 위한 마스터 타이머 (3초)
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   useEffect(() => {
-    // 마운트 후 3초간은 무조건 로딩 상태 유지
+    // 페이지 진입 후 3초간은 유저 정보가 있어도 '로딩 중'으로 간주합니다.
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
     }, 3000);
@@ -30,7 +30,7 @@ function Header() {
     return () => clearTimeout(timer);
   }, []);
 
-  // ✅ 2. localStorage에서 초기 사용자 정보 로드 (깜빡임 방지용)
+  // ✅ 2. 초기 렌더링 시 localStorage에서 유저 정보 로드
   const [localUser, setLocalUser] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedUser = localStorage.getItem('user');
@@ -46,7 +46,7 @@ function Header() {
     return null;
   });
   
-  // user 상태 업데이트 시 localUser 동기화
+  // AuthProvider의 user 상태가 변경되면 localUser도 업데이트
   useEffect(() => {
     if (user) {
       setLocalUser(user);
@@ -57,8 +57,8 @@ function Header() {
   
   const displayUser = user || localUser;
 
-  // ✅ 3. 로딩 조건 수정 (핵심!)
-  // isInitialLoading이 true인 3초 동안은 localUser가 있어도 무조건 스켈레톤을 보여줍니다.
+  // ✅ 3. 핵심 로직: 3초 타이머(isInitialLoading)가 우선권을 가집니다.
+  // 이 조건이 true인 동안은 유저 정보가 있어도 스켈레톤이 표시되어 깜빡임을 원천 차단합니다.
   const showSkeleton = isInitialLoading || isPending || isLoggingIn || isLoggingOut;
 
   const handleLogout = async () => {
@@ -70,7 +70,7 @@ function Header() {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  // 드롭다운 외부 클릭 시 닫기
+  // 드롭다운 외부 클릭 시 닫기 로직
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -87,6 +87,7 @@ function Header() {
   return (
     <header className="header">
       <div className="headerWrapper">
+        {/* 왼쪽 로고 영역 */}
         <div className="headerLeft">
           <Link href="/">
             <Image src={IMAGES.LOGO_DESKTOP} alt="Logo" width={153} height={51} priority className="desktopLogo" />
@@ -101,19 +102,15 @@ function Header() {
           )}
         </div>
 
-        <div className={`headerAuthSection ${(displayUser && !showSkeleton) ? "isLoggedIn" : ""}`}>
+        {/* 오른쪽 인증/사용자 영역 */}
+        <div className="headerAuthSection">
           {showSkeleton ? (
-            /* ✅ 3초 동안 유저 정보 노출을 물리적으로 차단하는 스켈레톤 */
+            /* ✅ 3초 타이머가 끝날 때까지 유저 정보를 절대 보여주지 않고 스켈레톤 유지 */
             <div className="headerLoadingPlaceholder skeleton-pulse" 
-                 style={{ 
-                   width: '80px', 
-                   height: '40px', 
-                   background: '#f0f0f0', 
-                   borderRadius: '8px' 
-                 }}>
+                 style={{ width: '80px', height: '40px' }}>
             </div>
           ) : displayUser ? (
-            /* ✅ 3초가 지난 후에만 사용자 정보가 나타남 */
+            /* ✅ 3초 뒤, 유저가 확인되었을 때만 등장 */
             <div className="headerAuthButtonsContainer" ref={dropdownRef}>
               <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span className="userNickname">{userDisplayName}님</span>
@@ -138,7 +135,7 @@ function Header() {
               )}
             </div>
           ) : (
-            /* ✅ 3초가 지났는데 유저가 없으면 로그인 버튼 표시 */
+            /* ✅ 3초 뒤, 유저가 없다면 로그인 버튼 등장 */
             <Link href="/auth" id="loginLinkButton" className="loginButton">로그인</Link>
           )}
         </div>
