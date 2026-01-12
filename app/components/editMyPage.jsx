@@ -12,7 +12,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-next
 function EditMyPage({ initialData, profileId }) {
   const router = useRouter();
   const id = profileId;
-  const { user } = useAuth(); // 전역 사용자 정보 가져오기
+  const { user, getMe } = useAuth(); // ✅ getMe 함수 추가
 
   // 1. 상태 관리 분리
   const [activeTab, setActiveTab] = useState('profile');
@@ -62,7 +62,8 @@ function EditMyPage({ initialData, profileId }) {
   const handleCloseToast = () => {
     setToast(prev => ({ ...prev, visible: false }));
     if (toast.type === 'success' && activeTab === 'profile') {
-      window.location.href = '/profile';
+      // ✅ 페이지 새로고침 대신 router.push 사용 (AuthProvider가 이미 업데이트된 정보를 가지고 있음)
+      router.push('/profile');
     }
   };
 
@@ -87,6 +88,10 @@ function EditMyPage({ initialData, profileId }) {
       });
 
       if (!response.ok) throw new Error('수정 중 오류가 발생했습니다.');
+      
+      // ✅ 프로필 수정 성공 후 사용자 정보 새로고침
+      await getMe();
+      
       setToast({ visible: true, message: '프로필 정보가 수정되었습니다! ✨', type: 'success' });
     } catch (err) {
       setToast({ visible: true, message: err.message, type: 'error' });

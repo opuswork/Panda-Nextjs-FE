@@ -133,7 +133,7 @@ export function AuthProvider({ children }) {
   }, [getMe]);
 
   return (
-    <AuthContext.Provider value={{ user, isPending, isLoggingOut, login, loginWithGoogle, logout, register }}>
+    <AuthContext.Provider value={{ user, isPending, isLoggingOut, login, loginWithGoogle, logout, register, getMe }}>
       {children}
 
       {/* ✅ 로그아웃 시 헤더와 본문의 시차를 가려주는 오버레이 */}

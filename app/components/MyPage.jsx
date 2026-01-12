@@ -103,7 +103,11 @@ function MyPage({ initialUser = null }) {
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>로그인 경로:</span>
-              <span className={styles.infoValue}>{user.provider === 'google' ? '구글 로그인' : '일반 로그인'}</span>
+              <span className={styles.infoValue}>
+                {user.provider === 'google' ? '구글 로그인' : 
+                 user.provider === 'kakao' ? '카카오 로그인' : 
+                 '일반 로그인'}
+              </span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>전화번호:</span>
