@@ -7,6 +7,7 @@ const AuthContext = createContext({
   user: null,
   isPending: true,
   isLoggingOut: false,
+  isLoggingIn: false,
   login: () => {},
   loginWithGoogle: () => {},
   logout: () => {},
@@ -32,6 +33,7 @@ export function AuthProvider({ children }) {
   });
   const [isPending, setIsPending] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false); // 로그아웃 상태
+  const [isLoggingIn, setIsLoggingIn] = useState(false); // 로그인 상태
   const router = useRouter();
 
   // 1. 내 정보 가져오기
@@ -67,21 +69,31 @@ export function AuthProvider({ children }) {
 
   // 2. 로그인
   async function login({ email, password, redirectTo }) {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include", // ✅ 크로스 도메인 쿠키를 위해 필수
-    });
+    try {
+      setIsLoggingIn(true); // 즉시 화면 가리기 활성화
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include", // ✅ 크로스 도메인 쿠키를 위해 필수
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "로그인 실패");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setIsLoggingIn(false);
+        throw new Error(errorData.message || "로그인 실패");
+      }
+
+      await getMe();
+      // ✅ 3초 대기 후 리다이렉트 (스피너 표시 시간 확보)
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      setIsLoggingIn(false);
+      router.push(redirectTo || "/products"); 
+    } catch (error) {
+      setIsLoggingIn(false);
+      throw error;
     }
-
-    await getMe();
-    router.push(redirectTo || "/products"); 
   }
 
   // 2-1. 구글 로그인
@@ -151,7 +163,7 @@ export function AuthProvider({ children }) {
   }, [getMe]);
 
   return (
-    <AuthContext.Provider value={{ user, isPending, isLoggingOut, login, loginWithGoogle, logout, register, getMe }}>
+    <AuthContext.Provider value={{ user, isPending, isLoggingOut, isLoggingIn, login, loginWithGoogle, logout, register, getMe }}>
       {children}
 
       {/* ✅ 로그아웃 시 헤더와 본문의 시차를 가려주는 오버레이 */}
@@ -163,6 +175,19 @@ export function AuthProvider({ children }) {
         }}>
           <div style={{ border: '4px solid #f3f3f3', borderTop: '4px solid #3498db', borderRadius: '50%', width: '40px', height: '40px', animation: 'spin 1s linear infinite' }}></div>
           <p style={{ marginTop: '20px', color: '#666', fontWeight: '500' }}>안전하게 로그아웃 중입니다...</p>
+          <style jsx>{` @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } `}</style>
+        </div>
+      )}
+
+      {/* ✅ 로그인 성공 시 헤더와 본문의 시차를 가려주는 오버레이 */}
+      {isLoggingIn && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          backgroundColor: '#ffffff', zIndex: 9999, display: 'flex',
+          flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+        }}>
+          <div style={{ border: '4px solid #f3f3f3', borderTop: '4px solid #3498db', borderRadius: '50%', width: '40px', height: '40px', animation: 'spin 1s linear infinite' }}></div>
+          <p style={{ marginTop: '20px', color: '#666', fontWeight: '500' }}>로그인 중입니다...</p>
           <style jsx>{` @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } `}</style>
         </div>
       )}

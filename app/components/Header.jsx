@@ -11,8 +11,8 @@ function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const isLandingPage = pathname === "/";
-  // ✅ isLoggingOut 추가
-  const { user, isPending, isLoggingOut, logout } = useAuth(); 
+  // ✅ isLoggingOut, isLoggingIn 추가
+  const { user, isPending, isLoggingOut, isLoggingIn, logout } = useAuth(); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   
@@ -83,9 +83,9 @@ function Header() {
           )}
         </div>
 
-        <div className={`headerAuthSection ${(displayUser && !isPending && !isLoggingOut) ? "isLoggedIn" : ""}`}>
-          {/* ✅ 수정된 로직: 로딩 중이거나 로그아웃 중일 때 Placeholder를 보여줌 */}
-          {(isPending || isLoggingOut) ? (
+        <div className={`headerAuthSection ${(displayUser && !isPending && !isLoggingOut && !isLoggingIn) ? "isLoggedIn" : ""}`}>
+          {/* ✅ 수정된 로직: 로딩 중이거나 로그아웃 중이거나 로그인 중일 때 Placeholder를 보여줌 */}
+          {(isPending || isLoggingOut || isLoggingIn) ? (
             // 로그인 버튼이나 프로필 아이콘과 비슷한 크기의 빈 박스
             <div className="headerLoadingPlaceholder" style={{ width: '70px', height: '40px' }}></div>
           ) : displayUser ? (
