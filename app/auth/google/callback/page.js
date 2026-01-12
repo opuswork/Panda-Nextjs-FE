@@ -35,6 +35,8 @@ export default function GoogleCallback() {
         console.log("로그인 성공! 사용자 정보를 가져오는 중...");
         // ✅ 인증 상태 업데이트를 위해 getMe 호출 (코드 통일성 유지)
         await getMe();
+        // ✅ 2초 대기 후 홈페이지로 리다이렉트 (스피너 표시 시간 확보)
+        await new Promise(resolve => setTimeout(resolve, 2000));
         // 페이지 새로고침으로 AuthProvider가 자동으로 getMe를 호출하도록 함
         window.location.href = "/"; // ✅ 전체 페이지 리로드로 쿠키와 상태 동기화
       } else {
