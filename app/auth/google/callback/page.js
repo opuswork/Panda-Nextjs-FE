@@ -7,7 +7,7 @@ export default function GoogleCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-  const { getMe } = useAuth(false);
+  const { getMe, setIsLoggingIn } = useAuth(false);
   
   // ✅ 중복 요청 방지를 위한 변수
   const isFetched = useRef(false);
@@ -33,10 +33,14 @@ export default function GoogleCallback() {
     .then(async (res) => {
       if (res.ok) {
         console.log("로그인 성공! 사용자 정보를 가져오는 중...");
+        // ✅ 로그인 중 상태 활성화 (화면 전체 오버레이 표시)
+        setIsLoggingIn(true);
+        // ✅ Header에 사용자 정보가 먼저 표시되지 않도록 localStorage 임시 제거
+        localStorage.removeItem('user');
         // ✅ 인증 상태 업데이트를 위해 getMe 호출 (코드 통일성 유지)
         await getMe();
-        // ✅ 2초 대기 후 홈페이지로 리다이렉트 (스피너 표시 시간 확보)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // ✅ 3초 대기 후 홈페이지로 리다이렉트 (스피너 표시 시간 확보)
+        await new Promise(resolve => setTimeout(resolve, 3000));
         // 페이지 새로고침으로 AuthProvider가 자동으로 getMe를 호출하도록 함
         window.location.href = "/"; // ✅ 전체 페이지 리로드로 쿠키와 상태 동기화
       } else {
@@ -47,6 +51,7 @@ export default function GoogleCallback() {
     })
     .catch((err) => {
       console.error("서버 통신 에러:", err);
+      setIsLoggingIn(false); // 에러 시 로그인 상태 해제
       router.push("/auth?error=server_error");
     });
   }, [code, router]);

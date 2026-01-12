@@ -8,6 +8,7 @@ const AuthContext = createContext({
   isPending: true,
   isLoggingOut: false,
   isLoggingIn: false,
+  setIsLoggingIn: () => {},
   login: () => {},
   loginWithGoogle: () => {},
   logout: () => {},
@@ -163,7 +164,7 @@ export function AuthProvider({ children }) {
   }, [getMe]);
 
   return (
-    <AuthContext.Provider value={{ user, isPending, isLoggingOut, isLoggingIn, login, loginWithGoogle, logout, register, getMe }}>
+    <AuthContext.Provider value={{ user, isPending, isLoggingOut, isLoggingIn, setIsLoggingIn, login, loginWithGoogle, logout, register, getMe }}>
       {children}
 
       {/* ✅ 로그아웃 시 헤더와 본문의 시차를 가려주는 오버레이 */}
