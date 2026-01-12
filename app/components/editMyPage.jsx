@@ -207,7 +207,9 @@ function EditMyPage({ initialData, profileId }) {
               </div>
               <div className={styles.formButtons}>
                 <button type="button" onClick={() => router.back()} className={styles.cancelBtn}>취소</button>
-                <button type="submit" className={styles.saveBtn} disabled={updating}>저장</button>
+                <button type="submit" className={styles.saveBtn} disabled={updating}>
+                  {updating ? '저장 중..' : '저장'}
+                </button>
               </div>
             </form>
           ) : (
@@ -256,7 +258,9 @@ function EditMyPage({ initialData, profileId }) {
               </div>
               <div className={styles.formButtons}>
                 <button type="button" onClick={() => setActiveTab('profile')} className={styles.cancelBtn}>이전으로</button>
-                <button type="submit" className={styles.saveBtn} disabled={updating}>비밀번호 변경</button>
+                <button type="submit" className={styles.saveBtn} disabled={updating}>
+                  {updating ? '변경 중..' : '비밀번호 변경'}
+                </button>
               </div>
             </form>
           )}
