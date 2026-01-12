@@ -29,7 +29,7 @@ export default function SignIn({ returnTo: propsReturnTo }) {
    * ux_mode: 'redirect'를 설정하면 팝업 대신 페이지가 전환됩니다.
    */
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const API_BASE_URL = process.env.API_BASE_URL;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app'; // ✅ NEXT_PUBLIC_ 접두사 추가
   const FRONTEND_URL = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://helpful-brigadeiros-517905.netlify.app');
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${API_BASE_URL}/api/auth/kakao/callback&response_type=code`;
 
