@@ -12,54 +12,55 @@ function Header() {
   const router = useRouter();
   const isLandingPage = pathname === "/";
   
-  // AuthContext에서 인증 상태 및 함수 가져오기
+  // AuthContext 상태
   const { user, isPending, isLoggingOut, isLoggingIn, logout } = useAuth(); 
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   
-  // ✅ 1. 강제 스켈레톤 유지를 위한 마스터 타이머 (3초)
+  // ✅ 1. 하이드레이션 가드: 브라우저가 완전히 준비될 때까지 기다림
+  const [mounted, setMounted] = useState(false);
+  // ✅ 2. 강제 로딩 타이머: 3초간 스켈레톤 고정
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  // ✅ 3. 로컬 유저 정보: 마운트 전에는 무조건 null
+  const [localUser, setLocalUser] = useState(null);
 
   useEffect(() => {
-    // 페이지 진입 후 3초간은 유저 정보가 있어도 '로딩 중'으로 간주합니다.
+    // 컴포넌트 마운트 시 실행
+    setMounted(true);
+
+    // ✅ 핵심: 브라우저가 준비된 "후에야" localStorage를 읽습니다. (정보 유출 차단)
+    const savedUser = localStorage.getItem('user');
+    const isLoggedOut = localStorage.getItem('isLoggedOut');
+    if (!isLoggedOut && savedUser) {
+      try {
+        setLocalUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Local user data error");
+      }
+    }
+
+    // 3초 강제 대기 타이머
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
     }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
-
-  // ✅ 2. 초기 렌더링 시 localStorage에서 유저 정보 로드
-  const [localUser, setLocalUser] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedUser = localStorage.getItem('user');
-      const isLoggedOut = localStorage.getItem('isLoggedOut');
-      if (!isLoggedOut && savedUser) {
-        try {
-          return JSON.parse(savedUser);
-        } catch (e) {
-          return null;
-        }
-      }
-    }
-    return null;
-  });
   
-  // AuthProvider의 user 상태가 변경되면 localUser도 업데이트
+  // AuthProvider의 실시간 user 상태와 동기화
   useEffect(() => {
     if (user) {
       setLocalUser(user);
-    } else if (!isPending) {
+    } else if (!isPending && mounted) {
       setLocalUser(null);
     }
-  }, [user, isPending]);
+  }, [user, isPending, mounted]);
   
   const displayUser = user || localUser;
 
-  // ✅ 3. 핵심 로직: 3초 타이머(isInitialLoading)가 우선권을 가집니다.
-  // 이 조건이 true인 동안은 유저 정보가 있어도 스켈레톤이 표시되어 깜빡임을 원천 차단합니다.
-  const showSkeleton = isInitialLoading || isPending || isLoggingIn || isLoggingOut;
+  // ✅ 4. 최종 로딩 조건: 마운트 전이거나 타이머 중이면 유저가 있어도 무조건 스켈레톤!
+  const showSkeleton = !mounted || isInitialLoading || isPending || isLoggingIn || isLoggingOut;
 
   const handleLogout = async () => {
     setIsDropdownOpen(false);
@@ -70,7 +71,6 @@ function Header() {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  // 드롭다운 외부 클릭 시 닫기 로직
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -87,7 +87,6 @@ function Header() {
   return (
     <header className="header">
       <div className="headerWrapper">
-        {/* 왼쪽 로고 영역 */}
         <div className="headerLeft">
           <Link href="/">
             <Image src={IMAGES.LOGO_DESKTOP} alt="Logo" width={153} height={51} priority className="desktopLogo" />
@@ -102,15 +101,14 @@ function Header() {
           )}
         </div>
 
-        {/* 오른쪽 인증/사용자 영역 */}
         <div className="headerAuthSection">
           {showSkeleton ? (
-            /* ✅ 3초 타이머가 끝날 때까지 유저 정보를 절대 보여주지 않고 스켈레톤 유지 */
+            /* ✅ 3초가 지나기 전엔 어떠한 사용자 정보도 이곳에 그리지 않습니다 */
             <div className="headerLoadingPlaceholder skeleton-pulse" 
-                 style={{ width: '80px', height: '40px' }}>
+                 style={{ width: '80px', height: '40px', background: '#f2f2f2', borderRadius: '8px' }}>
             </div>
           ) : displayUser ? (
-            /* ✅ 3초 뒤, 유저가 확인되었을 때만 등장 */
+            /* ✅ 3초 타이머가 끝난 정교한 시점에만 사용자 정보 노출 */
             <div className="headerAuthButtonsContainer" ref={dropdownRef}>
               <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span className="userNickname">{userDisplayName}님</span>
@@ -135,7 +133,7 @@ function Header() {
               )}
             </div>
           ) : (
-            /* ✅ 3초 뒤, 유저가 없다면 로그인 버튼 등장 */
+            /* ✅ 유저가 없는 것이 확실해진 3초 뒤에 로그인 버튼 노출 */
             <Link href="/auth" id="loginLinkButton" className="loginButton">로그인</Link>
           )}
         </div>
