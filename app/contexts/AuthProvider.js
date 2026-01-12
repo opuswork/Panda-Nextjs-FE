@@ -14,7 +14,22 @@ const AuthContext = createContext({
 });
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  // ✅ 페이지 리로드 시 이전 로그인 상태를 확인하여 깜빡임 방지
+  const [user, setUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem('user');
+      const isLoggedOut = localStorage.getItem('isLoggedOut');
+      // 로그아웃 힌트가 없고 저장된 사용자 정보가 있으면 초기 상태로 설정
+      if (!isLoggedOut && savedUser) {
+        try {
+          return JSON.parse(savedUser);
+        } catch (e) {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
   const [isPending, setIsPending] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false); // 로그아웃 상태
   const router = useRouter();
@@ -97,8 +112,9 @@ export function AuthProvider({ children }) {
       });
       
       if (res.ok) {
-        // ✅ 로그아웃 성공 시 로컬스토리지에 힌트 저장
+        // ✅ 로그아웃 성공 시 로컬스토리지에 힌트 저장 및 사용자 정보 제거
         localStorage.setItem('isLoggedOut', 'true');
+        localStorage.removeItem('user');
         setUser(null);
         // 모든 메모리 상태를 초기화하며 메인으로 이동
         window.location.href = '/'; 

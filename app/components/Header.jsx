@@ -60,9 +60,7 @@ function Header() {
           {(isPending || isLoggingOut) ? (
             // 로그인 버튼이나 프로필 아이콘과 비슷한 크기의 빈 박스
             <div className="headerLoadingPlaceholder" style={{ width: '70px', height: '40px' }}></div>
-          ) : (
-            <>
-              {user ? (
+          ) : user ? (
                 <div className="headerAuthButtonsContainer" ref={dropdownRef}>
                   <div className="userInfoWrapper" onClick={toggleDropdown} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span className="userNickname">{userDisplayName}님</span>
@@ -88,9 +86,8 @@ function Header() {
                 </div>
               ) : (
                 <Link href="/auth" id="loginLinkButton" className="loginButton">로그인</Link>
-              )}
-            </>
-          )}
+              )
+            }
         </div>
 
       </div>
