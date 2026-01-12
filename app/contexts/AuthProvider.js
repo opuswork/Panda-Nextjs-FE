@@ -23,10 +23,11 @@ export function AuthProvider({ children }) {
   const getMe = useCallback(async () => {
     try {
       setIsPending(true);
-      const response = await fetch("/api/users/me", {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+      const response = await fetch(`${API_BASE_URL}/api/users/me`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
+        credentials: "include", // ✅ 크로스 도메인 쿠키를 위해 필수
       });
 
       if (response.ok) {
@@ -49,11 +50,12 @@ export function AuthProvider({ children }) {
 
   // 2. 로그인
   async function login({ email, password, redirectTo }) {
-    const response = await fetch("/api/auth/login", {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
+      credentials: "include", // ✅ 크로스 도메인 쿠키를 위해 필수
     });
 
     if (!response.ok) {
@@ -108,7 +110,8 @@ export function AuthProvider({ children }) {
 
   // 4. 회원가입
   async function register({ email, password, firstName, lastName, nickname }) {
-    const response = await fetch("/api/users", {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://panda-nextjs-be.vercel.app';
+    const response = await fetch(`${API_BASE_URL}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, firstName, lastName, nickname }),

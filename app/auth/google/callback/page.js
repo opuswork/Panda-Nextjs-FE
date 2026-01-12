@@ -1,11 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/app/contexts/AuthProvider";
 
 export default function GoogleCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
+  const { getMe } = useAuth(false);
   
   // ✅ 중복 요청 방지를 위한 변수
   const isFetched = useRef(false);
@@ -21,20 +23,23 @@ export default function GoogleCallback() {
 
     console.log("인증 시도 중... code:", code);
 
-    // 3. 백엔드로 code 전달
+    // 3. 백엔드로 code 전달 (credentials: 'include'로 쿠키 수신)
     fetch(`${API_URL}/api/auth/google`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include", // ✅ 쿠키를 받기 위해 필수
       body: JSON.stringify({ code }),
     })
     .then(async (res) => {
       if (res.ok) {
-        console.log("로그인 성공!");
-        router.push("/"); // 성공 시 홈으로
+        console.log("로그인 성공! 사용자 정보를 가져오는 중...");
+        // ✅ 인증 상태 업데이트를 위해 getMe 호출
+        // 페이지 새로고침으로 AuthProvider가 자동으로 getMe를 호출하도록 함
+        window.location.href = "/"; // ✅ 전체 페이지 리로드로 쿠키와 상태 동기화
       } else {
         const errorData = await res.json();
         console.error("로그인 실패 상세:", errorData);
-        router.push(`/auth?error=failed&details=${errorData.message}`);
+        router.push(`/auth?error=failed&details=${encodeURIComponent(errorData.message || '인증 실패')}`);
       }
     })
     .catch((err) => {
