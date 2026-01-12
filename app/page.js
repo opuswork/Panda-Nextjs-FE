@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Landing from "@/app/components/Landing";
-import LandingSkeleton from "@/app/components/LandingSkeleton";
+import LandingSkeleton from "@/app/LandingSkeleton";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
