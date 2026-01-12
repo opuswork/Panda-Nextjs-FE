@@ -1,66 +1,84 @@
 :root {
   --blue: #3692ff;
   --header-height: 68px; /* 헤더 높이 고정 */
-  --max-width: 1200px;   /* 실제 콘텐츠 최대 너비 (보통 1200px가 가장 적당함) */
+  --max-width: 1200px;   /* 콘텐츠 최대 너비 */
+  --bg-color: #fafafa;   /* 스켈레톤과 일치하는 배경색 */
+}
+
+/* 1. 강력한 화이트 아웃 방지 설정 */
+html, body {
+  background-color: var(--bg-color) !important; /* JS 로드 전 배경색 고정 */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: inherit;
 }
 
-/* Pretendard 폰트가 없을 경우를 대비해 시스템 폰트 추가 */
 body {
-  background-color: #fafafa;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   color: #111827;
   overflow-x: hidden;
+  line-height: 1.5;
 }
 
-/* ✅ 레이아웃 구조 (푸터 하단 고정 로직) */
-html, body {
-  background-color: #fafafa !important;
-  height: 100%;
-}
-
+/* 2. 전체 레이아웃 구조 */
 #layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ✅ 헤더가 fixed이므로 본문에 여백을 줌 */
 main {
   flex: 1 0 auto;
-  /* padding-top: var(--header-height);  */
   width: 100%;
+  /* 헤더가 fixed이므로 필요 시 padding-top 사용 가능 */
+  /* padding-top: var(--header-height); */
 }
 
-/* Spinner 스타일 */
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--blue);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
+/* 3. 부드러운 화면 전환 애니메이션 (Fade-in) */
+.fade-in-content {
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
-/* ==========================================
-   Header Styles
-   ========================================== */
+/* 4. 스켈레톤 애니메이션 (Pulse) */
+.skeleton-pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; background-color: #f2f2f2; }
+  50% { opacity: 1; background-color: #e5e7eb; }
+  100% { opacity: 0.6; background-size: #f2f2f2; }
+}
+
+.headerLoadingPlaceholder {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+}
+
+/* 5. Header 스타일 */
 header {
   background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px); /* 세련된 배경 흐림 효과 */
+  backdrop-filter: blur(8px);
   position: fixed;
   top: 0;
   left: 0;
@@ -92,7 +110,6 @@ header {
 .mobileLogo { display: none; }
 
 .headerRight {
-  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -100,43 +117,34 @@ header {
 
 .navLink {
   text-decoration: none;
-  color: #000;
+  color: #374151;
   font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover, .navLink.active {
+  color: var(--blue);
+}
+
+.headerAuthSection {
+  display: flex;
+  align-items: center;
+  min-width: 80px;
+  justify-content: flex-end;
 }
 
 .headerAuthButtonsContainer {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 12px;
-  width: 100%;
 }
 
 .userNickname {
-  font-size: 16px;
+  font-size: 15px;
   color: #111827;
   font-weight: 500;
-}
-
-.headerAuthButtons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ✅ 로그인 시 나타나는 프로필 그룹 스타일 */
-.profile-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.profile-group span {
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
 }
 
 .profileIcon {
@@ -145,62 +153,52 @@ header {
   border: 1px solid #e5e7eb;
 }
 
-.profileDropdownButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s;
-}
-
-.profileDropdownButton:hover {
-  opacity: 0.7;
-}
-
+/* 드롭다운 스타일 */
 .profileDropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 12px);
   right: 0;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 90px;
-  z-index: 1000;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+  z-index: 1001;
   overflow: hidden;
+  padding: 4px;
 }
 
 .profileDropdownOption {
-  display: inline-block;
+  display: block;
   width: 100%;
-  padding: 10px 10px;
-  text-align: center;
+  padding: 10px 16px;
+  text-align: left;
   font-size: 14px;
-  color: #111827;
+  color: #374151;
   background: none;
   border: none;
   cursor: pointer;
-  text-decoration: none;
+  border-radius: 6px;
   transition: background-color 0.2s;
 }
 
 .profileDropdownOption:hover {
   background-color: #f3f4f6;
+  color: var(--blue);
 }
 
-.profileDropdownOption:nth-child(2) {
+.dropdownDivider {
+  margin: 4px 0;
+  border: 0;
   border-top: 1px solid #e5e7eb;
 }
 
-.profileDropdownOption:nth-child(3) {
-  border-top: 1px solid #e5e7eb;
+.logoutOption {
+  color: #ef4444;
 }
 
-/* 버튼 스타일 */
-#loginLinkButton {
+/* 로그인 버튼 */
+.loginButton, #loginLinkButton {
   background-color: var(--blue);
   color: #fff;
   padding: 10px 24px;
@@ -213,13 +211,11 @@ header {
   transition: background 0.2s;
 }
 
-#loginLinkButton:hover {
+.loginButton:hover {
   background-color: #257ae0;
 }
 
-/* ==========================================
-   Footer Styles
-   ========================================== */
+/* 6. Footer 스타일 */
 .footerWrapper {
   width: 100%;
   background-color: #111827;
@@ -235,16 +231,10 @@ footer {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  width: 100%;
 }
 
-.footerCopyright { 
-  font-size: 14px; 
-}
-
-/* 데스크톱: footerTopRow를 무시하고 한 줄로 배치 */
 .footerTopRow {
-  display: contents; /* 데스크톱에서는 자식 요소들이 부모의 직접 자식처럼 동작 */
+  display: contents;
 }
 
 #footerMenu {
@@ -266,61 +256,38 @@ footer {
   gap: 16px;
 }
 
-/* ==========================================
-   Responsive (Mobile)
-   ========================================== */
+/* 7. Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 8. Responsive (Mobile) */
 @media (max-width: 768px) {
   .desktopLogo { display: none; }
   .mobileLogo { display: block; }
-
   header { height: 60px; }
-  /* main { padding-top: 60px; } */
-
+  .userNickname { display: none; }
+  
   footer {
-    flex-direction: row;
-    gap: 24px;
-    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
   }
-
-  /* 모바일: footerTopRow가 적용되어 위아래로 배치 */
+  
   .footerTopRow {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
   }
-
-  .profile-group span { display: none; } /* 모바일에서는 닉네임 숨김 */
-  .userNickname { display: none; } /* 모바일에서는 닉네임 숨김 */
-}
-
-@media (max-width: 499px) {
-  #loginLinkButton {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-}
-
-/* Header.module.css 또는 해당 CSS 파일 */
-.headerLoadingPlaceholder {
-  background-color: #f2f2f2; /* 연한 회색 */
-  border-radius: 8px;
-  /* 부드럽게 깜빡이는 애니메이션 (선택사항) */
-  animation: skeleton-pulse 1.5s infinite ease-in-out;
-}
-
-.skeleton-pulse {
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-@keyframes skeleton-pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
 }
