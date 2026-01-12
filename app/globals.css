@@ -12,7 +12,7 @@
 
 /* Pretendard 폰트가 없을 경우를 대비해 시스템 폰트 추가 */
 body {
-  background-color: #ffffff;
+  background-color: #fafafa;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

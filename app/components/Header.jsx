@@ -45,14 +45,12 @@ function Header() {
   useEffect(() => {
     if (user) {
       setLocalUser(user);
-      // ✅ 유저 정보가 확실히 들어오면 3초를 기다리지 않고 로딩을 종료해서 
-      // "Continue" 버튼 클릭 후의 반응 속도를 높입니다.
-      setIsInitialLoading(false); 
+      setIsInitialLoading(false); // 유저 정보 감지 시 즉시 로딩 종료
     } else if (!isPending) {
       setLocalUser(null);
     }
   }, [user, isPending]);
-  
+
   const displayUser = user || localUser;
 
   const handleLogout = async () => {
