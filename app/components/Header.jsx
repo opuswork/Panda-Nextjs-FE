@@ -75,7 +75,7 @@ function Header() {
     (displayUser?.firstName && displayUser?.lastName ? `${displayUser.firstName}${displayUser.lastName}` : "사용자");
 
   // ✅ 로딩 조건 통합 (강제 3초 + 인증 펜딩 + 로그인/로그아웃 진행중)
-  const showSkeleton = isInitialLoading || isPending || isLoggingOut || isLoggingIn;
+  const showSkeleton = isPending && !localUser; // 로컬 데이터조차 없을 때만 스켈레톤 표시
 
   return (
     <header className="header">
