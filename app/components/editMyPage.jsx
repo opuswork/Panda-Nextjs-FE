@@ -92,10 +92,15 @@ function EditMyPage({ initialData, profileId }) {
       // ✅ 프로필 수정 성공 후 사용자 정보 새로고침
       await getMe();
       
+      // ✅ 사용자가 "저장 중..." 상태를 볼 수 있도록 최소 지연 시간 추가
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       setToast({ visible: true, message: '프로필 정보가 수정되었습니다! ✨', type: 'success' });
+      
+      // ✅ 토스트가 표시된 후에 버튼 상태 복원 (사용자가 피드백을 볼 수 있도록)
+      setUpdating(false);
     } catch (err) {
       setToast({ visible: true, message: err.message, type: 'error' });
-    } finally {
       setUpdating(false);
     }
   };
@@ -148,9 +153,14 @@ function EditMyPage({ initialData, profileId }) {
       });
       
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      
+      // ✅ 사용자가 "변경 중..." 상태를 볼 수 있도록 최소 지연 시간 추가
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // ✅ 토스트가 표시된 후에 버튼 상태 복원
+      setUpdating(false);
     } catch (err) {
       setToast({ visible: true, message: err.message, type: 'error' });
-    } finally {
       setUpdating(false);
     }
   };
