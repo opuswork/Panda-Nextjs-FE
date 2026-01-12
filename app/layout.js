@@ -23,8 +23,8 @@ export default function RootLayout({ children }) {
   }
 
   return (
-    <html lang="ko">
-      <body>
+    <html lang="ko" style={{ backgroundColor: '#fafafa' }}>
+      <body style={{ backgroundColor: '#fafafa' }}>
         {/* ✅ GoogleOAuthProvider는 항상 렌더링하여 useGoogleLogin 훅이 context를 찾을 수 있도록 합니다.
             clientId가 없으면 빈 문자열을 사용하되, 실제 로그인은 작동하지 않습니다. */}
         <GoogleOAuthProvider clientId={googleClientId || ''}>

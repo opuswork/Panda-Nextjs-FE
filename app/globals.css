@@ -7,13 +7,10 @@
 
 /* 1. 강력한 화이트 아웃 방지 설정 */
 html, body {
-  background-color: var(--bg-color) !important; /* JS 로드 전 배경색 고정 */
+  background-color: #fafafa !important; 
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   height: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -31,8 +28,7 @@ body {
 
 /* 2. 전체 레이아웃 구조 */
 #layout-wrapper {
-  display: flex;
-  flex-direction: column;
+  background-color: #fafafa;
   min-height: 100vh;
 }
 
