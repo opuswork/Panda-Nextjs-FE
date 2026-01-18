@@ -280,14 +280,32 @@ footer {
   .userNickname { display: none; }
   
   footer {
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 20px;
-    text-align: center;
+  }
+  
+  .footerCopyright {
+    text-align: left;
   }
   
   .footerTopRow {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    align-items: flex-end;
+  }
+  
+  #footerMenu {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  
+  #socialMedia {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
   }
 }
