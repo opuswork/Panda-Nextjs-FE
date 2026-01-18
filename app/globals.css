@@ -298,13 +298,13 @@ footer {
   }
   
   #footerMenu {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
-    align-items: flex-end;
+    align-items: flex-start;
   }
   
   #socialMedia {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     align-items: flex-end;
   }
